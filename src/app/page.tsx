@@ -1,49 +1,42 @@
-import Link from 'next/link';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+
 export default function Home() {
   return (
     
     <main className="min-h-screen bg-white text-gray-800">
 
-      {/* Header */}
-      <header className="bg-blue-900 text-white px-6 py-4">
-        <div className="w-full flex flex-row items-center justify-center space-x-6">
-          {/* Logo wrapped in Link */}
-          <Link href="/" className="flex items-center space-x-2 hover:opacity-90">
-            <img src="/Adinath Logo/Adinath Logo_Clear Background.png" alt="Adinath Controls" className="h-20 w-auto" />
-          </Link>
-          <span className="text-2xl font-bold">Adinath Controls</span>
-          {/* Navigation Links */}
-          <Link href="/" className="hover:underline">Home</Link>
-          <Link href="/products" className="hover:underline">Products</Link>
-          <Link href="/about" className="hover:underline">About</Link>
-          <Link href="/contact" className="hover:underline">Contact</Link>
-        </div>
-      </header>
+      <Header />
 
       {/* Content */}
       <div className="p-6">
         <h2 className="text-3xl font-bold mb-4">Welcome to Adinath Controls</h2>
         <p className="text-lg mb-6">We provide premium electrical & automation solutions for industrial control systems.</p>
 
-        <section className="bg-gray-100 p-4 rounded-md">
-          <h3 className="text-2xl font-semibold mb-2">Our Key Offerings</h3>
-          <ul className="list-disc list-inside">
-            <li>Control Panels</li>
-            <li>PLC Automation</li>
-            <li>AC Drive Panels</li>
-            <li>Customized Engineering Solutions</li>
-          </ul>
+        {/* Partner Logos with Link */}
+        <section className="mt-10">
+          <h3 className="text-2xl font-semibold mb-4 pl-15">Authorized Sole Distributor Of India</h3>
+          <div className="flex items-center gap-10 pl-15">
+            <a href="https://www.athenacontrols.com/" target="_blank" rel="noopener noreferrer">
+              <img
+                src="/Images/Partners Logo/Athena _ White background.jpeg"
+                alt="Athena"
+                className="h-32 w-40 hover:opacity-80 transition"
+                /* className="h-32 w-40 hover:opacity-80 transition" */
+              />
+            </a>
+            <a href="http://www.onehalf20.com/" target="_blank" rel="noopener noreferrer">
+              <img
+                src="/Images/Partners Logo/Onehalf20 _ White background.jpeg"
+                alt="Onehalf20"
+                className="h-17 w-55 hover:opacity-80 transition"
+              />
+            </a>
+          </div>
         </section>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-blue-900 text-white text-center py-4 mt-10">
-        <div className="space-y-1">
-          <p>Contact us: +91 12345 67890 | info@adinathcontrols.com</p>
-          <p>123 Industrial Lane, Ahmedabad, Gujarat</p>
-          <p className="text-sm text-gray-300 mt-2">&copy; {new Date().getFullYear()} Adinath Controls. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
 
     </main>
   )
