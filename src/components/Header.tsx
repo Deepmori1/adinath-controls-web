@@ -1,11 +1,13 @@
 "use client";
 import Link from 'next/link';
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,13 +30,24 @@ export default function Header() {
         { label: "Products", href: "/products" },
         { label: "About", href: "/about" },
         { label: "Contact", href: "/contact" },
-      ].map(({ label, href }) => (
-        <Link key={href} href={href} className="relative group px-2 py-1">
-          <span className="after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-0.5 after:bg-white after:transition-all after:duration-300 group-hover:after:w-full">
-            {label}
-          </span>
-        </Link>
-      ))}
+      ].map(({ label, href }) => {
+        const isActive = pathname === href;
+  
+        return (
+          <Link
+            key={href}
+            href={href}
+            className="relative group px-2 py-1"
+          >
+            <span
+              className={`after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-0.5 after:bg-white after:transition-all after:duration-300
+                ${isActive ? 'after:w-full' : 'after:w-0 group-hover:after:w-full'}`}
+            >
+              {label}
+            </span>
+          </Link>
+        );
+      })}
     </>
   );
 
@@ -68,11 +81,13 @@ export default function Header() {
       </div>
 
       {/* Mobile Dropdown Nav */}
-      {menuOpen && (
-        <div className="md:hidden mt-2 flex flex-col items-center space-y-3 pb-4">
-          {navLinks}
-        </div>
-      )}
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-800 ease-in-out ${
+          menuOpen ? "max-h-96 mt-2 py-4 opacity-100" : "max-h-0 opacity-0"
+        } flex flex-col items-center space-y-3`}
+      >
+        {navLinks}
+      </div>
     </header>
   );
 }
