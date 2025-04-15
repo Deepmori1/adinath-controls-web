@@ -29,7 +29,7 @@ export default function Products() {
   const [selected, setSelected] = useState<string | null>(null);
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-white-950 via-white-900 to-white-800 text-black">
+    <main className="min-h-screen bg-white text-black">
       <Header />
 
       {/* Hero Section */}
