@@ -12,13 +12,13 @@ export default function Footer() {
           <div className="md:col-span-2">
             <h4 className="text-lg font-semibold mb-3">Quick Contact</h4>
             <div className="flex items-center space-x-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92V19a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.12A19.5 19.5 0 0 1 3.12 10.8 19.8 19.8 0 0 1 0 2.18 2 2 0 0 1 2 0h2.08a2 2 0 0 1 2 1.72c.12 1.06.3 2.12.55 3.17a2 2 0 0 1-.45 1.94L5.1 8.35a16 16 0 0 0 6.55 6.55l1.52-1.52a2 2 0 0 1 1.94-.45c1.05.25 2.11.43 3.17.55a2 2 0 0 1 1.72 2z" /></svg>
+              <Phone size={18} className="text-blue-600"/>
               <a href="tel:+919825734038" className="hover:underline">
                 +91 9825734038
               </a>
             </div>
             <div className="flex items-start space-x-2 mt-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-blue-600 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
+              <Mail size={18} className="text-blue-600 mt-1" />
               <div className="flex flex-col space-y-0">
                 <a href="mailto:sales@adinathcontrols.com" className="hover:underline">
                   sales@adinathcontrols.com
@@ -48,7 +48,7 @@ export default function Footer() {
               <p className="text-black mt-2">Empowering Automation Excellence</p>
             </div>
             <div className="flex items-start space-x-2 text-left">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-blue-600 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 6-9 13-9 13s-9-7-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
+              <MapPin size={18} className="text-blue-600 mt-1" /> 
               <div className="text-sm text-gray-700">
                 <p>ADINATH CONTROLS PVT LTD</p>
                 <p>816/5, Kothari Industrial Estate</p>
