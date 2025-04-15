@@ -16,7 +16,7 @@ export default function SubProductPage() {
   
 
   if (!product || !subProduct) return notFound();
-
+  const pdfs = subProduct.pdfs ?? [];
   return (
     <main className="min-h-screen bg-white text-gray-800">
       <Header />
@@ -33,11 +33,11 @@ export default function SubProductPage() {
         </p>
 
         {/* Downloads Section */}
-        {subProduct.pdfs?.length > 0 && (
+        {pdfs.length > 0 && (
           <div className="mt-12 text-left">
             <h2 className="text-2xl font-semibold mb-6">Downloads</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {subProduct.pdfs.map((doc, idx) => (
+            {pdfs.map((doc, idx) => (
                 <a
                   key={idx}
                   href={doc.file}
