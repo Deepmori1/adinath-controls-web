@@ -29,7 +29,7 @@ export default function Header() {
         { label: "Home", href: "/" },
         { label: "Products", href: "/products" },
         { label: "About", href: "/about" },
-        { label: "Contact", href: "/contact" },
+        { label: "Contact Us", href: "/contact" },
       ].map(({ label, href }) => {
         const isActive = pathname === href;
   
@@ -52,7 +52,7 @@ export default function Header() {
   );
 
   return (
-    <header className={`bg-blue-900 text-white sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'py-2' : 'py-4'}`}>
+    <header className={`bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 text-white sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'py-2' : 'py-4'}`}>
       <div className="w-full flex items-center justify-between relative px-4 max-w-6xl mx-auto">
         
         {/* Logo + Brand */}

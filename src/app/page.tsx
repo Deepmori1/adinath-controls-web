@@ -10,15 +10,24 @@ export default function Home() {
 
       <Header />
 
+      <section className="font-sans bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 text-white py-20 px-6 text-center">
+        <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight mb-6">
+          The industrial automation partner that <br />
+          <span className="text-blue-300">drives your efficiency</span>
+        </h1>
+        <p className="text-lg sm:text-xl text-blue-100 max-w-2xl mx-auto mb-8">
+          We deliver precision electrical & automation systems for modern manufacturing environments.
+        </p>
+        <a
+          href="/products"
+          className="inline-block bg-white text-blue-800 font-semibold px-6 py-3 rounded-full shadow hover:bg-blue-100 transition"
+        >
+          Explore Products
+        </a>
+      </section>
+
       {/* Page Content */}
       <div className="max-w-6xl mx-auto px-6 py-12">
-        {/* Hero Section */}
-        <section className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4 text-blue-900">Welcome to Adinath Controls</h2>
-          <p className="text-lg text-gray-600 font-light">
-            We provide premium electrical & automation solutions for industrial control systems.
-          </p>
-        </section>
 
         {/* Partners Section */}
         <section>

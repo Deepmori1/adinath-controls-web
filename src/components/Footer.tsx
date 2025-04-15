@@ -38,17 +38,16 @@ export default function Footer() {
               <li><Link href="/" className="hover:underline">Home</Link></li>
               <li><Link href="/products" className="hover:underline">Products</Link></li>
               <li><Link href="/about" className="hover:underline">About</Link></li>
-              <li><Link href="/contact" className="hover:underline">Contact</Link></li>
             </ul>
           </div>
 
           {/* Logo + Address */}
           <div className="md:col-span-3 flex items-center justify-center space-x-6">
-            <div className="flex flex-col items-center">
+            <div className="hidden md:flex flex-col items-center">
               <img src="/Images/Adinath Logo/Adinath Logo_Clear Background.png" alt="Adinath Logo" className="h-32" />
               <p className="text-black mt-2">Empowering Automation Excellence</p>
             </div>
-            <div className="flex items-start space-x-2 text-left">
+            <div className="hidden md:flex items-start space-x-2 text-left">
               <MapPin size={18} className="text-blue-600 mt-1" /> 
               <div className="text-sm text-gray-700">
                 <p>ADINATH CONTROLS PVT LTD</p>
