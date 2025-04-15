@@ -2,6 +2,7 @@
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -18,12 +19,12 @@ export default function Home() {
         <p className="text-lg sm:text-xl text-blue-100 max-w-2xl mx-auto mb-8">
           We deliver precision electrical & automation systems for modern manufacturing environments.
         </p>
-        <a
+        <Link
           href="/products"
           className="inline-block bg-white text-blue-800 font-semibold px-6 py-3 rounded-full shadow hover:bg-blue-100 transition"
         >
           Explore Products
-        </a>
+        </Link>
       </section>
 
       {/* Page Content */}
@@ -37,7 +38,7 @@ export default function Home() {
 
           <div className="flex flex-wrap justify-center gap-6">
             {/* Athena Card */}
-            <a
+            <Link
               href="https://www.athenacontrols.com/"
               target="_blank"
               rel="noopener noreferrer"
@@ -49,10 +50,10 @@ export default function Home() {
                 className="h-20 object-contain mb-3"
               />
               <span className="text-sm font-semibold text-gray-700">Click here for Athena - USA Products</span>
-            </a>
+            </Link>
 
             {/* OneHalf20 Card */}
-            <a
+            <Link
               href="http://www.onehalf20.com/"
               target="_blank"
               rel="noopener noreferrer"
@@ -64,7 +65,7 @@ export default function Home() {
                 className="h-20 object-contain mb-3"
               />
               <span className="text-sm font-semibold text-gray-700">Click here for OneHalf20 - Canada Products</span>
-            </a>
+            </Link>
           </div>
         </section>
       </div>
