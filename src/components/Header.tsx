@@ -8,16 +8,18 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
+  const isHome = pathname === '/';
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScroll = window.scrollY;
-      if (currentScroll > 40 && !scrolled) {
-        setScrolled(true);
-      } else if (currentScroll < 20 && scrolled) {
-        setScrolled(false);
-      }
-    };
+    if (!isHome) return;
+      const handleScroll = () => {
+        const currentScroll = window.scrollY;
+        if (currentScroll > 40 && !scrolled) {
+          setScrolled(true);
+        } else if (currentScroll < 20 && scrolled) {
+          setScrolled(false);
+        }
+      };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -52,7 +54,7 @@ export default function Header() {
   );
 
   return (
-    <header className={`bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 text-white sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'py-2' : 'py-4'}`}>
+    <header className={`${ isHome ? 'sticky top-0' : ''} bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 text-white z-50 transition-all duration-300 ${isHome && scrolled ? 'py-2' : 'py-4'}`}>
       <div className="w-full flex items-center justify-between relative px-4 max-w-6xl mx-auto">
         
         {/* Logo + Brand */}
@@ -60,7 +62,7 @@ export default function Header() {
           <img
             src="/Images/Adinath Logo/Adinath Logo_Clear Background.png"
             alt="Adinath Controls"
-            className={`transition-all duration-300 ${scrolled ? 'h-14' : 'h-20'} w-auto`}
+            className={`transition-all duration-300 ${scrolled ? 'h-10' : 'h-13'} w-auto`}
           />
           <span className="text-2xl font-bold">Adinath Controls</span>
         </Link>

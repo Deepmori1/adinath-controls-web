@@ -2,8 +2,26 @@ export const products = [
     {
       slug: "temperature-controller",
       name: "Temperature Controller",
-      description: "Advanced temperature controllers for industrial applications.",
+      description: "High-precision controller for industrial applications.",
       image: "/Images/Products/temperature-controller.jpg",
+      subProducts: [
+        {
+          name: "C Series",
+          slug: "c-series",
+          image: "/Images/SubProducts/c-series.png",
+          pdfs: [
+            { name: "C Series 16C", file: "/pdfs/ATHENA Temp Controller C-Series 16C.pdf" },
+            { name: "C Series 18C-19C", file: "/pdfs/ATHENA Temp Controller C-Series 18C-19C.pdf" },
+            { name: "C Series 25C", file: "/pdfs/ATHENA Temp Controller C-Series 25C.pdf" },
+          ]
+        },
+        {
+          name: "Multi Zone Controller",
+          slug: "multi-zone-controller",
+          image: "/Images/SubProducts/multi-zone-controller.jpg",
+        },
+        // Add more...
+      ]
     },
     {
       slug: "hot-runner",
