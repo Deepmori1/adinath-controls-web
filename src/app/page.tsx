@@ -7,11 +7,16 @@ import Link from 'next/link';
 export default function Home() {
   return (
 
-    <main className="min-h-screen bg-white text-gray-800">
+    <main className="min-h-screen bg-white text-gray-800"> {/* Main wrapper with minimum height and default background/text color */}
 
       <Header />
 
+      {/* Hero Section */}
+
+      {/* Gradient background with centered text and padding */}
       <section className="font-sans bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 text-white py-20 px-6 text-center">
+        
+        {/* Highlighted text span for emphasis */}
         <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight mb-6">
           The industrial automation partner that <br />
           <span className="text-blue-300">drives your efficiency</span>
@@ -19,6 +24,8 @@ export default function Home() {
         <p className="text-lg sm:text-xl text-blue-100 max-w-2xl mx-auto mb-8">
           We deliver precision electrical & automation systems for modern manufacturing environments.
         </p>
+
+        {/* Internal link to the products page */}
         <Link
           href="/products"
           className="inline-block bg-white text-blue-800 font-semibold px-6 py-3 rounded-full shadow hover:bg-blue-100 transition"
@@ -36,7 +43,9 @@ export default function Home() {
             Authorized Sole Distributor Of India
           </h3>
 
+          {/* Partner Cards Grid */}
           <div className="flex flex-wrap justify-center gap-6">
+            
             {/* Athena Card */}
             <Link
               href="https://www.athenacontrols.com/"

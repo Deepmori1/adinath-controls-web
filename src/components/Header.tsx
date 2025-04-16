@@ -58,14 +58,25 @@ export default function Header() {
       <div className="w-full flex items-center justify-between relative px-4 max-w-6xl mx-auto">
         
         {/* Logo + Brand */}
-        <Link href="/" className="flex items-center space-x-2 hover:opacity-90">
-          <img
-            src="/Images/Adinath Logo/Adinath Logo_Clear Background.png"
-            alt="Adinath Controls"
-            className={`transition-all duration-300 ${scrolled ? 'h-10' : 'h-13'} w-auto`}
-          />
-          <span className="text-2xl font-bold">Adinath Controls</span>
-        </Link>
+        {isHome ? (
+          <div className="flex items-center space-x-2 cursor-default">
+            <img
+              src="/Images/Adinath Logo/Adinath Logo_Clear Background.png"
+              alt="Adinath Controls"
+              className={`transition-all duration-300 ${scrolled ? 'h-10' : 'h-13'} w-auto`}
+            />
+            <span className="text-2xl font-bold">Adinath Controls</span>
+          </div>
+        ) : (
+          <Link href="/" className="flex items-center space-x-2 hover:opacity-90">
+            <img
+              src="/Images/Adinath Logo/Adinath Logo_Clear Background.png"
+              alt="Adinath Controls"
+              className={`transition-all duration-300 ${scrolled ? 'h-10' : 'h-13'} w-auto`}
+            />
+            <span className="text-2xl font-bold">Adinath Controls</span>
+          </Link>
+        )}
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 space-x-6 items-center">
