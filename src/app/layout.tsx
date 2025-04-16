@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter, Montserrat, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import QueryProvider from '@/providers/QueryProvider';
+import Image from "next/image";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,7 +14,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Add the new fonts
 const inter = Inter({ 
   subsets: ['latin'],
   display: 'swap',
@@ -43,6 +43,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const whatsappLink = "https://wa.me/919825734038?text=Hi%20I%20have%20a%20question";
+
   return (
     <html lang="en">
       <body
@@ -50,6 +52,21 @@ export default function RootLayout({
       >
         <QueryProvider>
           {children}
+
+          {/* ✅ Floating WhatsApp Button */}
+          <a
+            href={whatsappLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="fixed bottom-6 right-6 z-50 bg-green-500 rounded-full shadow-lg p-2 hover:scale-110 transition-transform"
+          >
+            <Image
+              src="/Images/whatsapp.png"
+              alt="WhatsApp"
+              width={48}
+              height={48}
+            />
+          </a>
         </QueryProvider>
       </body>
     </html>

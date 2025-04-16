@@ -99,7 +99,7 @@ export default function Products() {
                     <Link
                       href={`/products/${slug}`}
                       onClick={() => setSelected(slug)}
-                      className="group bg-white/10 backdrop-blur-lg border border-white/10 rounded-3xl p-6 flex flex-col items-center justify-center text-center transition-all duration-300 ease-in-out shadow-lg hover:scale-105 hover:ring-2 hover:ring-blue-500/50"
+                      className="group w-full h-75 bg-white/10 backdrop-blur-lg border border-white/10 rounded-3xl p-6 flex flex-col items-center justify-center text-center transition-all duration-300 ease-in-out shadow-lg hover:scale-105 hover:ring-2 hover:ring-blue-500/50"
                     >
                       {product.imageUrl && (
                         <motion.div
