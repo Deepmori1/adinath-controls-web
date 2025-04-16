@@ -116,7 +116,7 @@ export default function ProductPage() {
           <motion.div className="mt-12">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               <AnimatePresence>
-                {product.subProducts.map((subProduct, index) => (
+                {product.subProducts.map((subProduct) => (
                   <motion.div
                     key={subProduct.slug}
                     layoutId={`product-${product.slug}-${subProduct.slug}`}
