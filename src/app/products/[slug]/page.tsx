@@ -1,80 +1,65 @@
+// src/app/products/[slug]/page.tsx
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { useParams } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { useParams } from 'next/navigation';
-import { notFound } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { db } from '@/lib/firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-
-interface PDF {
-  name: string;
-  file: string;
-}
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
 
 interface SubProduct {
   name: string;
   slug: string;
   image?: string;
-  pdfs?: PDF[];
 }
 
 interface Product {
   id: string;
   name: string;
   slug: string;
-  description: string;
+  description?: string;
   imageUrl?: string;
   subProducts?: SubProduct[];
 }
 
+const ProductSkeleton = () => (
+  <div className="animate-pulse">
+    <div className="relative aspect-square w-full max-w-[300px] mx-auto mb-4 bg-gray-200 rounded-lg" />
+    <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto mb-2" />
+    <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto" />
+  </div>
+);
+
 export default function ProductPage() {
   const { slug } = useParams() as { slug: string };
-  const [product, setProduct] = useState<Product | null>(null);
-  const [selected, setSelected] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        setIsLoading(true);
-        const snapshot = await getDocs(collection(db, 'products'));
-        const allProducts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Product[];
-        
-        console.log('Searching for slug:', slug);
-        console.log('Available products:', allProducts);
-        
-        const match = allProducts.find(p => p.slug === slug);
-        
-        console.log('Matched product:', match);
-        
-        if (match) {
-          setProduct(match);
-        } else {
-          console.log('No product found for slug:', slug);
-        }
-      } catch (err) {
-        console.error('Error fetching product:', err);
-        setError(err instanceof Error ? err.message : 'Failed to fetch product');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchProduct();
-  }, [slug]);
+  const { data: product, isLoading, error } = useQuery({
+    queryKey: ['product', slug],
+    queryFn: async () => {
+      const snapshot = await getDocs(collection(db, 'products'));
+      const products = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...(doc.data() as Omit<Product, 'id'>)
+      })) as Product[];
+      
+      return products.find(p => p.slug === slug);
+    },
+  });
 
   if (isLoading) {
     return (
       <main className="min-h-screen bg-white">
         <Header />
-        <div className="flex justify-center items-center min-h-[400px]">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500" />
+        <div className="max-w-4xl mx-auto px-6 py-16">
+          <ProductSkeleton />
         </div>
+        <Footer />
       </main>
     );
   }
@@ -83,76 +68,99 @@ export default function ProductPage() {
     return (
       <main className="min-h-screen bg-white">
         <Header />
-        <div className="text-center text-red-500 py-10">{error}</div>
+        <div className="max-w-4xl mx-auto px-6 py-16 text-center">
+          <div className="text-red-500">Error loading product</div>
+        </div>
+        <Footer />
       </main>
     );
   }
 
-  if (!product) return notFound();
-  const subProducts = product.subProducts ?? [];
+  if (!product) return null;
 
   return (
     <main className="min-h-screen bg-white text-gray-800">
       <Header />
-
-      <div className="max-w-4xl mx-auto text-center px-6 py-16">
+      <div className="max-w-4xl mx-auto px-6 py-16 text-center">
         <motion.div
-          layoutId={`card-${product.slug}`}
-          layout="position"
-          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          className="flex flex-col items-center"
+          layoutId={`main-product-${product?.slug}`}
+          className="mb-12"
         >
-          {product.imageUrl && (
-            <motion.img
-              layoutId={`image-${product.slug}`}
-              transition={{ type: 'spring', stiffness: 150, damping: 15 }}
-              src={product.imageUrl}
-              alt={product.name}
-              className="h-64 w-auto object-contain mb-8"
-            />
+          {product?.imageUrl && (
+            <motion.div className="relative aspect-square w-full max-w-[350px] mx-auto mb-8">
+              <Image
+                src={product.imageUrl}
+                alt={product.name}
+                fill
+                priority
+                className="object-contain"
+                sizes="(max-width: 768px) 100vw, 350px"
+              />
+            </motion.div>
+          )}
+          <motion.h1 className="text-4xl font-bold mb-4">{product?.name}</motion.h1>
+          {product?.description && (
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto"
+            >
+              {product.description}
+            </motion.p>
           )}
         </motion.div>
-
-        <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
-
-        <motion.p
-          className="text-lg text-gray-700"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
-        >
-          {product.description}
-        </motion.p>
-
-        {subProducts.length > 0 && (
-          <section className="mt-12">
+        
+        {/* SubProducts Grid */}
+        {product?.subProducts && product.subProducts.length > 0 && (
+          <motion.div className="mt-12">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {subProducts.map((sub, index) => (
-                <Link
-                  key={index}
-                  href={`/products/${product.slug}/${sub.slug}`}
-                  onClick={() => setSelected(sub.slug)}
-                  className={`group bg-white/10 backdrop-blur-lg border border-white/10 rounded-3xl p-6 flex flex-col items-center justify-center text-center transition-all duration-300 ease-in-out shadow-lg hover:scale-105 hover:ring-2 hover:ring-blue-500/50 ${
-                    selected && selected !== sub.slug ? 'opacity-20 scale-95' : 'opacity-100'
-                  }`}
-                >
-                  {sub.image && (
-                    <img
-                      src={sub.image}
-                      alt={sub.name}
-                      className="mx-auto h-24 w-auto mb-3 object-contain"
-                    />
-                  )}
-                  <motion.p className="text-lg font-semibold text-black tracking-tight">
-                    {sub.name}
-                  </motion.p>
-                </Link>
-              ))}
+              <AnimatePresence>
+                {product.subProducts.map((subProduct, index) => (
+                  <motion.div
+                    key={subProduct.slug}
+                    layoutId={`product-${product.slug}-${subProduct.slug}`}
+                    initial={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className={`${
+                      selectedProduct && selectedProduct !== subProduct.slug
+                        ? 'opacity-0'
+                        : 'opacity-100'
+                    }`}
+                  >
+                    <Link
+                      href={`/products/${slug}/${subProduct.slug}`}
+                      onClick={() => setSelectedProduct(subProduct.slug)}
+                      className="group bg-white/10 backdrop-blur-lg border border-white/10 rounded-3xl p-6 flex flex-col items-center justify-center text-center transition-all duration-300 ease-in-out shadow-lg hover:scale-105 hover:ring-2 hover:ring-blue-500/50"
+                    >
+                      {subProduct.image && (
+                        <motion.div
+                          layoutId={`image-${product.slug}-${subProduct.slug}`}
+                          className="relative aspect-square h-50 w-full mb-4"
+                        >
+                          <Image
+                            src={subProduct.image}
+                            alt={subProduct.name}
+                            fill
+                            className="object-contain"
+                            sizes="(max-width: 768px) 100vw, 200px"
+                          />
+                        </motion.div>
+                      )}
+                      <motion.h3
+                        layoutId={`title-${product.slug}-${subProduct.slug}`}
+                        className="text-lg font-semibold"
+                      >
+                        {subProduct.name}
+                      </motion.h3>
+                    </Link>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
-          </section>
+          </motion.div>
         )}
       </div>
-
       <Footer />
     </main>
   );

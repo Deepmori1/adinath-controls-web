@@ -1,12 +1,14 @@
+// src/app/products/[slug]/[subslug]/page.tsx
 'use client';
 
-import { useParams, notFound } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { db } from '@/lib/firebase';
+import { useQuery } from '@tanstack/react-query';
 import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { useParams } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 interface PDF {
   name: string;
@@ -29,142 +31,119 @@ interface Product {
 
 export default function SubProductPage() {
   const { slug, subslug } = useParams() as { slug: string; subslug: string };
-  const [subProduct, setSubProduct] = useState<SubProduct | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchSubProduct = async () => {
-      try {
-        setIsLoading(true);
-        console.log('Fetching with slug:', slug, 'and subslug:', subslug);
+  const { data: subProduct, isLoading, error } = useQuery({
+    queryKey: ['subproduct', slug, subslug],
+    queryFn: async () => {
+      const snapshot = await getDocs(collection(db, 'products'));
+      const products = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...(doc.data() as Omit<Product, 'id'>)
+      })) as Product[];
+      
+      const product = products.find(p => p.slug === slug);
+      return product?.subProducts?.find(sp => sp.slug === subslug);
+    },
+  });
 
-        const snapshot = await getDocs(collection(db, 'products'));
-        const allProducts = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...(doc.data() as Omit<Product, 'id'>)
-        })) as Product[];
-
-        console.log('All products:', allProducts);
-
-        const product = allProducts.find(p => {
-          console.log('Comparing product slug:', p.slug, 'with:', slug);
-          return p.slug === slug;
-        });
-
-        console.log('Found product:', product);
-
-        if (!product) {
-          console.log('No product found for slug:', slug);
-          setError(`No product found for ${slug}`);
-          return;
-        }
-
-        if (!product.subProducts) {
-          console.log('No subProducts found for product:', product.name);
-          setError(`No sub-products found for ${product.name}`);
-          return;
-        }
-
-        const match = product.subProducts.find(sp => {
-          console.log('Comparing subproduct slug:', sp.slug, 'with:', subslug);
-          return sp.slug === subslug;
-        });
-
-        console.log('Matched subProduct:', match);
-
-        if (match) {
-          setSubProduct(match);
-        } else {
-          setError(`No sub-product found for ${subslug}`);
-        }
-      } catch (err) {
-        console.error('Error fetching sub-product:', err);
-        setError(err instanceof Error ? err.message : 'Failed to fetch sub-product');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchSubProduct();
-  }, [slug, subslug]);
-
-  // Loading State
   if (isLoading) {
     return (
       <main className="min-h-screen bg-white">
         <Header />
-        <div className="flex justify-center items-center min-h-[400px]">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500" />
-        </div>
-      </main>
-    );
-  }
-
-  // Error State
-  if (error) {
-    return (
-      <main className="min-h-screen bg-white">
-        <Header />
-        <div className="max-w-4xl mx-auto px-6 py-16 text-center">
-          <div className="text-red-500 mb-4">Error: {error}</div>
-          <button
-            onClick={() => window.history.back()}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Go Back
-          </button>
+        <div className="max-w-4xl mx-auto px-6 py-16">
+          <div className="animate-pulse">
+            <div className="relative aspect-square w-full max-w-[300px] mx-auto mb-4 bg-gray-200 rounded-lg" />
+            <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto mb-2" />
+          </div>
         </div>
         <Footer />
       </main>
     );
   }
 
-  if (!subProduct) return notFound();
+  if (error || !subProduct) {
+    return (
+      <main className="min-h-screen bg-white">
+        <Header />
+        <div className="max-w-4xl mx-auto px-6 py-16 text-center">
+          <div className="text-red-500">Product not found</div>
+        </div>
+        <Footer />
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-white text-gray-800">
       <Header />
-
       <div className="max-w-4xl mx-auto px-6 py-16 text-center">
-        {subProduct.image && (
-          <img
-            src={subProduct.image}
-            alt={subProduct.name}
-            className="h-48 w-auto mx-auto mb-8 object-contain"
-          />
-        )}
-        <h1 className="text-4xl font-bold mb-4">{subProduct.name}</h1>
-        <p className="text-lg text-gray-600 mb-8">
-          Detailed view of {subProduct.name}
-        </p>
+        <motion.div
+          layoutId={`product-${slug}-${subslug}`}
+          className="mb-12"
+        >
+          {subProduct?.image && (
+            <motion.div
+              layoutId={`image-${slug}-${subslug}`}
+              className="relative aspect-square w-full max-w-[200px] mx-auto mb-8"
+            >
+              <Image
+                src={subProduct.image}
+                alt={subProduct.name}
+                fill
+                priority
+                className="object-contain"
+                sizes="(max-width: 768px) 100vw, 200px"
+              />
+            </motion.div>
+          )}
+          <motion.h1
+            layoutId={`title-${slug}-${subslug}`}
+            className="text-4xl font-bold mb-4"
+          >
+            {subProduct?.name}
+          </motion.h1>
+        </motion.div>
 
-        {/* Downloads Section */}
-        {subProduct.pdfs && subProduct.pdfs.length > 0 && (
-          <div className="mt-12 text-left">
-            <h2 className="text-2xl font-semibold mb-6">Downloads</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {subProduct.pdfs.map((doc, idx) => (
-                <a
-                  key={idx}
-                  href={doc.file}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block p-4 bg-white rounded-lg shadow hover:shadow-md hover:scale-105 transition-transform border border-gray-200 text-center"
-                >
-                  <img
-                    src="/Images/pdf-icon.png"
-                    alt="PDF"
-                    className="h-16 mx-auto mb-3"
-                  />
-                  <p className="text-blue-700 font-medium">{doc.name}</p>
-                </a>
-              ))}
+        {/* PDFs Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          {subProduct?.pdfs && subProduct.pdfs.length > 0 && (
+            <div className="mt-12">
+              <h2 className="text-2xl font-semibold mb-6">Downloads</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {subProduct.pdfs.map((pdf, index) => (
+                  <motion.a
+                    key={index}
+                    href={pdf.file}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group bg-white/10 backdrop-blur-lg border border-white/10 rounded-3xl p-6 flex flex-col items-center justify-center text-center transition-all duration-300 ease-in-out shadow-lg hover:scale-105 hover:ring-2 hover:ring-blue-500/50"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 + index * 0.1 }}
+                  >
+                    <div className="relative w-16 h-16 mb-4">
+                      <Image
+                        src="/images/pdf-icon.png"
+                        alt="PDF"
+                        fill
+                        className="object-contain"
+                        sizes="64px"
+                      />
+                    </div>
+                    <p className="text-blue-600 font-medium hover:text-blue-800">
+                      {pdf.name}
+                    </p>
+                  </motion.a>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </motion.div>
       </div>
-
       <Footer />
     </main>
   );
