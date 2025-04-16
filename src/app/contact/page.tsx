@@ -62,7 +62,7 @@ export default function Contact() {
       <section className="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 py-20 text-white text-center px-6">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">Get in Touch with Us</h1>
         <p className="text-lg text-blue-100 max-w-xl mx-auto">
-          We'd love to hear from you. Reach out for inquiries, support, or partnership opportunities.
+          We&apos;d  love to hear from you. Reach out for inquiries, support, or partnership opportunities.
         </p>
       </section>
 
