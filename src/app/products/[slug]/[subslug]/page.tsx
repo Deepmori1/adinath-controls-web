@@ -127,14 +127,14 @@ export default function SubProductPage() {
                   >
                     <div className="relative w-16 h-16 mb-4">
                       <Image
-                        src="/images/pdf-icon.png"
+                        src="/Images/pdf-icon.png"
                         alt="PDF"
                         fill
                         className="object-contain"
                         sizes="64px"
                       />
                     </div>
-                    <p className="text-blue-600 font-medium hover:text-blue-800">
+                    <p className="text-lg">
                       {pdf.name}
                     </p>
                   </motion.a>
