@@ -3,9 +3,10 @@
 import { useParams, notFound } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { db } from '@/lib/firebase';
-import { collection, getDocs, DocumentData } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+
 
 interface PDF {
   name: string;
