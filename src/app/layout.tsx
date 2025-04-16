@@ -43,7 +43,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const whatsappLink = "https://wa.me/919825734038?text=Hi%20I%20have%20a%20question";
+  const whatsappLink = "https://wa.me/919825734038";
 
   return (
     <html lang="en">

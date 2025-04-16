@@ -57,7 +57,7 @@ export default function Footer() {
               
               <div className="flex items-start space-x-4">
                 <Mail className="w-6 h-6 text-blue-400 mt-1" />
-                <div className="space-y-3">
+                <div className="">
                   <a 
                     href="mailto:sales@adinathcontrols.com" 
                     className="font-['Inter'] text-lg block hover:text-blue-300 transition-colors duration-300"
