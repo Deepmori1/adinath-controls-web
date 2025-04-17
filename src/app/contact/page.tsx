@@ -94,8 +94,21 @@ export default function Contact() {
         </div>
         <div className="lg:col-span-4">
           <h3 className="font-bold text-blue-800 mb-2">Email</h3>
-          <p>sales@adinathcontrols.com</p>
-          <p>service@adinathcontrols.com</p>
+          <div className="">
+                  <a 
+                    href="mailto:sales@adinathcontrols.com" 
+                    className="block hover:text-blue-600"
+                  >
+                    sales@adinathcontrols.com
+                  </a>
+                  <a 
+                    href="mailto:service@adinathcontrols.com" 
+                    className="block hover:text-blue-600"
+                  >
+                    service@adinathcontrols.com
+                  </a>
+                </div>
+          
         </div>
         <div className="lg:col-span-4">
           <h3 className="font-bold text-blue-800 mb-2">Address</h3>

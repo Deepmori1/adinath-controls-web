@@ -22,18 +22,73 @@ export default function About() {
       <section className="max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 items-center">
         <div>
           <h2 className="text-3xl font-semibold text-blue-800 mb-4">Who We Are</h2>
-          <p className="text-gray-700 text-lg leading-relaxed">
+          <p className="text-gray-700 text-lg leading-relaxed text-justify">
             Established in 2002, Adinath Controls Pvt. Ltd. is a leading provider of industrial automation solutions
             specializing in precision electrical and automation systems. With a strong commitment to quality and service,
             we have been the trusted partner for numerous industries including plastics, packaging, textiles, pharmaceuticals,
             and more.
           </p>
         </div>
-        <div>
+        <div className="relative w-full aspect-[4/3] rounded-xl shadow-lg overflow-hidden">
           <Image
             src="/Images/About/about-industrial.jpg"
             alt="About Adinath Controls"
-            className="w-full rounded-xl shadow-lg"
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 items-center">
+        <div className="relative w-full aspect-[4/3] rounded-xl shadow-lg overflow-hidden">
+          <Image
+            src="/Images/About/about-industrial.jpg"
+            alt="About Adinath Controls"
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+        <div>
+          <h2 className="text-3xl font-semibold text-blue-800 mb-4">Foundations of Innovation</h2>
+          <p className="text-gray-700 text-lg leading-relaxed text-justify">
+          The year was 1987. Nitin Desai (MSEE, USA), along with a dedicated team of technocrats with years of relevant 
+          experience, gave firm shape to a company in the field of manufacturing and marketing Auto-tune PID Temperature Controllers, 
+          Temperature Indicators, SCR Power Controllers, and temperature sensors such as Thermocouples and RTDs. The company 
+          also specialized in customized control panels based on customer requirements.</p>
+
+          <p className="text-gray-700 text-lg leading-relaxed py-2 text-justify">
+          To keep pace with international technological developments, the company entered into a collaboration with 
+          Athena Controls Inc., USA. Thus, Athena Controls (India) Pvt. Ltd. was established — an Inductotherm Group Company. 
+          In line with the philosophy of our collaborator, we believed in service-oriented marketing and the concept 
+          of “Total Access,” where customers could reach out to any team member for the right guidance on temperature 
+          control applications.</p>
+
+          <p className="text-gray-700 text-lg leading-relaxed text-justify">
+          Following a business restructuring, the company was renamed Adinath Controls Pvt. Ltd. The rest, as they say, 
+          is quality assured.
+          </p>
+        </div>   
+      </section>
+
+      <section className="max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 items-center">
+      <div>
+          <h2 className="text-3xl font-semibold text-blue-800 mb-4">Our Vision</h2>
+          <p className="text-gray-700 text-lg leading-relaxed text-justify">
+          To be a trusted global leader in industrial automation by delivering innovative, 
+          reliable, and intelligent control solutions that empower manufacturers to achieve operational excellence, 
+          sustainability, and technological advancement.
+         
+          </p>
+        </div> 
+        <div className="relative w-full aspect-[4/3] rounded-xl shadow-lg overflow-hidden">
+          <Image
+            src="/Images/About/Our Vision.png"
+            alt="About Adinath Controls"
+            fill
+            className="object-cover"
+            priority
           />
         </div>
       </section>

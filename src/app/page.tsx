@@ -39,7 +39,7 @@ export default function Home() {
 
         {/* Partners Section */}
         <section>
-          <h3 className="text-2xl font-semibold text-center mb-8 text-blue-800">
+          <h3 className="text-4xl font-bold text-center mb-8">
             Authorized Sole Distributor Of India
           </h3>
 
