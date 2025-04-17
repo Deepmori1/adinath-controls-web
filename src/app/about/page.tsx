@@ -2,6 +2,7 @@
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Image from "next/image";
 
 export default function About() {
   return (
@@ -28,7 +29,7 @@ export default function About() {
           </p>
         </div>
         <div>
-          <img
+          <Image
             src="/Images/About/about-industrial.jpg"
             alt="About Adinath Controls"
             className="w-full rounded-xl shadow-lg"
