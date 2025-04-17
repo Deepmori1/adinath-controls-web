@@ -3,6 +3,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Image from "next/image";
+import Link from "next/link";
 
 export default function About() {
   return (
@@ -70,12 +71,12 @@ export default function About() {
         <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-6">
           Join the growing list of manufacturers who trust Adinath Controls for high-performance automation and electrical solutions.
         </p>
-        <a
+        <Link
           href="/products"
           className="inline-block bg-blue-800 text-white font-semibold px-8 py-3 rounded-full hover:bg-blue-700 transition"
         >
           Explore Our Products
-        </a>
+        </Link>
       </section>
 
       <Footer />
