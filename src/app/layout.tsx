@@ -46,7 +46,7 @@ export default function RootLayout({
   const whatsappLink = "https://wa.me/919825734038";
 
   return (
-    <html lang="en">
+    <html lang="en" className="overflow-y-scroll">
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${montserrat.variable} ${playfair.variable} antialiased`}
       >

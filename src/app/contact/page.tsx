@@ -4,6 +4,9 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 import { useState } from 'react';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+import '@/app/globals.css';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -20,6 +23,11 @@ export default function Contact() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  // Simplified phone handler
+  const handlePhoneChange = (phone: string) => {
+    setFormData(prev => ({ ...prev, phone }));
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -27,7 +35,7 @@ export default function Contact() {
       const response = await fetch("https://formspree.io/f/mgvabypj", {
         method: "POST",
         headers: {
-          "Accept": "application/json", // ✅ CORS-safe header
+          "Accept": "application/json",
           "Content-Type": "application/x-www-form-urlencoded"
         },
         body: new URLSearchParams(formData).toString()
@@ -38,10 +46,9 @@ export default function Contact() {
         setSuccessMessage('Message sent successfully!');
         setShowSuccess(true);
       
-        // Hide with fade out
         setTimeout(() => {
-          setShowSuccess(false); // triggers fade
-          setTimeout(() => setSuccessMessage(''), 500); // remove message after fade
+          setShowSuccess(false);
+          setTimeout(() => setSuccessMessage(''), 500);
         }, 5000);
 
       } else {
@@ -122,17 +129,16 @@ export default function Contact() {
           onChange={handleChange}
           className="w-full border border-gray-300 p-3 rounded-md"
         />
-        <input
-          type="tel"
-          name="phone"
-          placeholder="Your Phone Number"
-          required
-          pattern="[0-9]{10}"
-          title="Please enter a 10-digit phone number"
+        <div className="phone-input-container">
+        <PhoneInput
+          country={'in'}
           value={formData.phone}
-          onChange={handleChange}
-          className="w-full border border-gray-300 p-3 rounded-md"
+          onChange={phone => handlePhoneChange(phone)}
+          containerStyle={{ width: '100%' }}
+          inputStyle={{ width: '100%', height: '48px' }}
+          buttonStyle={{ backgroundColor: 'white' }}
         />
+        </div>
         <textarea
           name="message"
           rows={5}
@@ -151,15 +157,16 @@ export default function Contact() {
           </button>
           {successMessage && (
             <p
-            className={`text-green-600 text-center mt-4 transition-opacity duration-500 ${
-              showSuccess ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            {successMessage}
-          </p>
+              className={`text-green-600 text-center mt-4 transition-opacity duration-500 ${
+                showSuccess ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              {successMessage}
+            </p>
           )}
         </div>
       </form>
+
 
       {/* CTA */}
       <div className="text-center mt-16 text-lg text-gray-600">
