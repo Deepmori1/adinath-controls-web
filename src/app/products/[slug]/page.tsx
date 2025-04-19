@@ -104,7 +104,33 @@ export default function ProductPage() {
         <motion.div layoutId={`main-product-${product?.slug}`} className="mb-12">
 
           {/* Product Image Slider */}
-          {product?.images && product.images.length > 0 ? (
+          {product?.images && product.images.length > 1 && (!product.pdfs || product.pdfs.length === 0) && (!product.subProducts || product.subProducts.length === 0) ? (
+            <>
+              <motion.h1 
+                className="text-4xl font-bold mb-6"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+              >
+                {product.name}
+              </motion.h1>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 mb-8">
+                {product.images.map((img, idx) => (
+                  <div key={idx} className="relative aspect-square w-full rounded-xl overflow-hidden shadow">
+                    <Image
+                      src={img}
+                      alt={`${product.name} ${idx + 1}`}
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 768px) 100vw, 350px"
+                    />
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : product?.images && product.images.length > 0 ? (
+            // default image slider
             <div className="relative aspect-square w-full max-w-[350px] mx-auto mb-8 overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.div
@@ -124,21 +150,23 @@ export default function ProductPage() {
                   />
                 </motion.div>
               </AnimatePresence>
+              <motion.h1 className="text-4xl font-bold mt-6">{product?.name}</motion.h1>
             </div>
-          ) : product?.imageUrl && (
-            <motion.div className="relative aspect-square w-full max-w-[350px] mx-auto mb-8">
-              <Image
-                src={product.imageUrl}
-                alt={product.name}
-                fill
-                priority
-                className="object-contain"
-                sizes="(max-width: 768px) 100vw, 350px"
-              />
-            </motion.div>
-          )}
-
-          <motion.h1 className="text-4xl font-bold mb-4">{product?.name}</motion.h1>
+          ) : product?.imageUrl ? (
+            <>
+              <motion.div className="relative aspect-square w-full max-w-[350px] mx-auto mb-8">
+                <Image
+                  src={product.imageUrl}
+                  alt={product.name}
+                  fill
+                  priority
+                  className="object-contain"
+                  sizes="(max-width: 768px) 100vw, 350px"
+                />
+              </motion.div>
+              <motion.h1 className="text-4xl font-bold mb-4">{product?.name}</motion.h1>
+            </>
+          ) : null}
 
           {product?.description && (
             <motion.p
