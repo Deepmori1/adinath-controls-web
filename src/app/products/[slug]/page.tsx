@@ -10,7 +10,7 @@ import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface PDF {
   name: string;
@@ -29,11 +29,11 @@ interface Product {
   slug: string;
   description?: string;
   imageUrl?: string;
+  images?: string[];
   subProducts?: SubProduct[];
-  pdfs?: PDF[]
+  pdfs?: PDF[];
 }
 
-// 🔁 A fallback skeleton shown while loading the product
 const ProductSkeleton = () => (
   <div className="animate-pulse">
     <div className="relative aspect-square w-full max-w-[300px] mx-auto mb-4 bg-gray-200 rounded-lg" />
@@ -43,25 +43,32 @@ const ProductSkeleton = () => (
 );
 
 export default function ProductPage() {
-  const { slug } = useParams() as { slug: string }; // Grab the product slug from the URL
-  const [selectedProduct, setSelectedProduct] = useState<string | null>(null); // Tracks which subproduct is selected
-  
+  const { slug } = useParams() as { slug: string };
+  const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-   // Fetch data using React Query, cache it by ['product', slug]
   const { data: product, isLoading, error } = useQuery({
     queryKey: ['product', slug],
     queryFn: async () => {
-      const snapshot = await getDocs(collection(db, 'products')); // Fetch entire 'products' collection
+      const snapshot = await getDocs(collection(db, 'products'));
       const products = snapshot.docs.map(doc => ({
         id: doc.id,
         ...(doc.data() as Omit<Product, 'id'>)
       })) as Product[];
-      
-      return products.find(p => p.slug === slug); // Find the product matching the URL slug
+
+      return products.find(p => p.slug === slug);
     },
   });
 
-  // While the product data is being loaded, show the skeleton UI
+  useEffect(() => {
+    if (product?.images && product.images.length > 1) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % product.images!.length);
+      }, 4000);
+      return () => clearInterval(interval);
+    }
+  }, [product]);
+
   if (isLoading) {
     return (
       <main className="min-h-screen bg-white">
@@ -86,7 +93,6 @@ export default function ProductPage() {
     );
   }
 
-  // If product not found, return nothing (or optionally a 404 later)
   if (!product) return null;
 
   const productPdfs = product.pdfs ?? [];
@@ -95,13 +101,31 @@ export default function ProductPage() {
     <main className="min-h-screen bg-white text-gray-800">
       <Header />
       <div className="max-w-4xl mx-auto px-6 py-16 text-center">
+        <motion.div layoutId={`main-product-${product?.slug}`} className="mb-12">
 
-        {/* Main Product Card with animation */}
-        <motion.div
-          layoutId={`main-product-${product?.slug}`} className="mb-12" >
-
-          {/* 🖼 Product Image */}
-          {product?.imageUrl && (
+          {/* Product Image Slider */}
+          {product?.images && product.images.length > 0 ? (
+            <div className="relative aspect-square w-full max-w-[350px] mx-auto mb-8 overflow-hidden">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={product.images[currentImageIndex]}
+                  className="absolute inset-0"
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -50 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <Image
+                    src={product.images[currentImageIndex]}
+                    alt={`${product.name} ${currentImageIndex + 1}`}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 100vw, 350px"
+                  />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          ) : product?.imageUrl && (
             <motion.div className="relative aspect-square w-full max-w-[350px] mx-auto mb-8">
               <Image
                 src={product.imageUrl}
@@ -113,13 +137,11 @@ export default function ProductPage() {
               />
             </motion.div>
           )}
-
-          {/* Product Name */}
+          
           <motion.h1 className="text-4xl font-bold mb-4">{product?.name}</motion.h1>
 
-          {/* Optional Product Description */}
           {product?.description && (
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
@@ -129,8 +151,8 @@ export default function ProductPage() {
             </motion.p>
           )}
         </motion.div>
-        
-        {/* Logic for products if they dont have any subproducts */}
+
+        {/* Downloads */}
         {productPdfs.length > 0 && (
           <section className="mt-12 text-left">
             <h2 className="text-2xl font-semibold mb-6">Downloads</h2>
@@ -159,8 +181,7 @@ export default function ProductPage() {
           </section>
         )}
 
-        
-        {/* SubProducts Grid */}
+        {/* SubProducts */}
         {product?.subProducts && product.subProducts.length > 0 && (
           <motion.div className="mt-12">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -171,7 +192,7 @@ export default function ProductPage() {
                     layoutId={`product-${product.slug}-${subProduct.slug}`}
                     initial={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className={`${
+                    className={`$ {
                       selectedProduct && selectedProduct !== subProduct.slug
                         ? 'opacity-0'
                         : 'opacity-100'
@@ -182,8 +203,6 @@ export default function ProductPage() {
                       onClick={() => setSelectedProduct(subProduct.slug)}
                       className="group bg-white/10 backdrop-blur-lg border border-white/10 rounded-3xl p-6 flex flex-col items-center justify-center text-center transition-all duration-300 ease-in-out shadow-lg hover:scale-105 hover:ring-2 hover:ring-blue-500/50"
                     >
-
-                      {/* SubProduct Image */}
                       {subProduct.image && (
                         <motion.div
                           layoutId={`image-${product.slug}-${subProduct.slug}`}
@@ -198,8 +217,6 @@ export default function ProductPage() {
                           />
                         </motion.div>
                       )}
-
-                      {/* SubProduct Title */}
                       <motion.h3
                         layoutId={`title-${product.slug}-${subProduct.slug}`}
                         className="text-lg font-semibold"
