@@ -44,7 +44,7 @@ const ProductSkeleton = () => (
 
 export default function ProductPage() {
   const { slug } = useParams() as { slug: string };
-  const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
+  const [_selectedProduct, setSelectedProduct] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const { data: product, isLoading, error } = useQuery({
@@ -137,7 +137,7 @@ export default function ProductPage() {
               />
             </motion.div>
           )}
-          
+
           <motion.h1 className="text-4xl font-bold mb-4">{product?.name}</motion.h1>
 
           {product?.description && (
