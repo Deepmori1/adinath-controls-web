@@ -44,7 +44,7 @@ const ProductSkeleton = () => (
 
 export default function ProductPage() {
   const { slug } = useParams() as { slug: string };
-  const [_selectedProduct, setSelectedProduct] = useState<string | null>(null);
+  //const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const { data: product, isLoading, error } = useQuery({
@@ -192,11 +192,7 @@ export default function ProductPage() {
                     layoutId={`product-${product.slug}-${subProduct.slug}`}
                     initial={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className={`$ {
-                      selectedProduct && selectedProduct !== subProduct.slug
-                        ? 'opacity-0'
-                        : 'opacity-100'
-                    }`}
+                    className="opacity-100"
                   >
                     <Link
                       href={`/products/${slug}/${subProduct.slug}`}
